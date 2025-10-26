@@ -1,4 +1,3 @@
-t
 
 # 🎓 EdTech Dashboard - Platform Manajemen Pembelajaran
 
@@ -600,15 +599,15 @@ Password: admin123
 
 ### Dashboard
 
-*Overview analytics dengan dynamic growth tracking and weekly chart*
+*Overview analytics dengan dynamic growth tracking dan weekly chart*
 
 ![Dashboard](https://github.com/user-attachments/assets/811d4595-8a69-4ceb-8da8-c30e40e577f5)
 
 ### Tutors Management
 
-*Complete CRUD dengan bulk delete and smart sorting (newest first)*
+*Complete CRUD dengan bulk delete dan smart sorting (newest first)*
 
-![1761505227942](image/README/1761505227942.png)
+![Tutors Management](https://github.com/user-attachments/assets/3b27d2fa-a27d-4cae-a787-63242f891efe)
 
 ### Bookings Management
 
@@ -1267,8 +1266,7 @@ Saya sangat antusias untuk berkontribusi pada **EdTech Indonesia** dan membantu 
 
 ---
 
-<div align="center">
-### ⭐ If you like this project, please give it a star on GitHub! ⭐
+⭐ If you like this project, please give it a star on GitHub! ⭐
 
 **Made with ❤️ and ☕ in Indonesia**
 
