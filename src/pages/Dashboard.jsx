@@ -337,7 +337,6 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* ✅ SESI MENDATANG CARD - INI YANG BERUBAH */}
         <Card className="border-slate-200 dark:border-slate-800 shadow-sm">
           <CardHeader className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -345,7 +344,7 @@ const Dashboard = () => {
                 <CardTitle className="text-lg sm:text-xl font-bold">Sesi Mendatang</CardTitle>
                 <CardDescription className="text-xs sm:text-sm">3 hari ke depan</CardDescription>
               </div>
-              {/* ✅ PERUBAHAN DI SINI - Tambah ?range=next3d */}
+              
               <Button 
                 variant="outline" 
                 size="sm" 
