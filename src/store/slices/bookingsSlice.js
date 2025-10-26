@@ -8,6 +8,17 @@ import {
   getWeeklyBookingsData
 } from '../../services/firestoreHelpers';
 
+// Helper function to sort bookings by date and time (nearest first)
+const sortBookingsByDateTime = (bookings) => {
+  return bookings.sort((a, b) => {
+    // Compare dates first
+    const dateCompare = a.date.localeCompare(b.date);
+    if (dateCompare !== 0) return dateCompare;
+    // If dates are equal, compare start times
+    return a.startTime.localeCompare(b.startTime);
+  });
+};
+
 export const fetchBookings = createAsyncThunk(
   'bookings/fetchBookings',
   async (_, { rejectWithValue }) => {
@@ -16,7 +27,10 @@ export const fetchBookings = createAsyncThunk(
         getAllBookings(),
         new Promise(resolve => setTimeout(resolve, 1000))
       ]);
-      return bookings;
+      
+      // Sort by date and time (nearest first)
+      const sortedBookings = sortBookingsByDateTime([...bookings]);
+      return sortedBookings;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -27,7 +41,9 @@ export const fetchUpcomingBookings = createAsyncThunk(
   'bookings/fetchUpcomingBookings',
   async (_, { rejectWithValue }) => {
     try {
-      return await getUpcomingBookings();
+      const upcomingBookings = await getUpcomingBookings();
+      // Already sorted in firestoreHelpers, but ensure consistency
+      return sortBookingsByDateTime([...upcomingBookings]);
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -121,7 +137,8 @@ const bookingsSlice = createSlice({
       })
       .addCase(addBooking.fulfilled, (state, action) => {
         state.loading = false;
-        state.bookings.push(action.payload);
+        // Add new booking and re-sort by date/time
+        state.bookings = sortBookingsByDateTime([...state.bookings, action.payload]);
       })
       .addCase(addBooking.rejected, (state, action) => {
         state.loading = false;
@@ -136,6 +153,8 @@ const bookingsSlice = createSlice({
         if (index !== -1) {
           state.bookings[index] = { ...state.bookings[index], ...action.payload };
         }
+        // Re-sort after edit (in case date/time changed)
+        state.bookings = sortBookingsByDateTime([...state.bookings]);
       })
       .addCase(editBooking.rejected, (state, action) => {
         state.loading = false;

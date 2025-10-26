@@ -14,7 +14,15 @@ export const fetchTutors = createAsyncThunk(
         getAllTutors(),
         new Promise(resolve => setTimeout(resolve, 1000))
       ]);
-      return tutors;
+      
+      // Sort by createdAt descending (newest first)
+      const sortedTutors = tutors.sort((a, b) => {
+        const dateA = new Date(a.createdAt || 0);
+        const dateB = new Date(b.createdAt || 0);
+        return dateB - dateA;
+      });
+      
+      return sortedTutors;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -90,13 +98,13 @@ const tutorsSlice = createSlice({
         state.initialLoading = false;
         state.error = action.payload;
       })
-      // Add tutor
+      // Add tutor - add to beginning of array (newest first)
       .addCase(addTutor.pending, (state) => {
         state.loading = true;
       })
       .addCase(addTutor.fulfilled, (state, action) => {
         state.loading = false;
-        state.tutors.push(action.payload);
+        state.tutors.unshift(action.payload); // Add to start instead of push
       })
       .addCase(addTutor.rejected, (state, action) => {
         state.loading = false;

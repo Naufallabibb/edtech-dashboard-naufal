@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTutors, addTutor, editTutor, removeTutor } from '../store/slices/tutorsSlice';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { Checkbox } from '../components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Skeleton } from '../components/ui/skeleton';
 import { toast } from 'sonner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSearch, faUsers, faTrash } from '@fortawesome/free-solid-svg-icons';
 import TutorCard from '../components/TutorCard';
 import TutorForm from '../components/TutorForm';
 import Pagination from '../components/Pagination';
@@ -23,8 +24,10 @@ const Tutors = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isBulkDeleteDialogOpen, setIsBulkDeleteDialogOpen] = useState(false);
   const [editingTutor, setEditingTutor] = useState(null);
   const [deletingTutorId, setDeletingTutorId] = useState(null);
+  const [selectedTutors, setSelectedTutors] = useState([]);
   const [formData, setFormData] = useState({
     name: '', email: '', subject: '', hourlyRate: '', status: 'active'
   });
@@ -48,6 +51,26 @@ const Tutors = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // Select/Deselect handlers
+  const handleSelectTutor = (tutorId) => {
+    setSelectedTutors(prev => 
+      prev.includes(tutorId) 
+        ? prev.filter(id => id !== tutorId)
+        : [...prev, tutorId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedTutors.length === paginatedTutors.length) {
+      setSelectedTutors([]);
+    } else {
+      setSelectedTutors(paginatedTutors.map(t => t.id));
+    }
+  };
+
+  const isAllSelected = paginatedTutors.length > 0 && selectedTutors.length === paginatedTutors.length;
+  const isSomeSelected = selectedTutors.length > 0 && selectedTutors.length < paginatedTutors.length;
 
   const validateForm = () => {
     const newErrors = {};
@@ -94,8 +117,9 @@ const Tutors = () => {
         toast.success('Tutor berhasil ditambahkan');
       }
       setIsDialogOpen(false);
-    } catch (error) {
-      toast.error('Gagal menyimpan tutor', { description: error });
+    } catch (err) {
+      toast.error('Gagal menyimpan tutor', { description: String(err) });
+      console.error('Submit error:', err);
     }
   };
 
@@ -115,14 +139,68 @@ const Tutors = () => {
       toast.success('Tutor berhasil dihapus');
       setIsDeleteDialogOpen(false);
       setDeletingTutorId(null);
-    } catch (error) {
-      toast.error('Gagal menghapus tutor', { description: error.message || error });
+    } catch (err) {
+      toast.error('Gagal menghapus tutor', { description: err.message || String(err) });
+      console.error('Delete error:', err);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    try {
+      const { checkTutorHasBookings } = await import('../services/firestoreHelpers');
+      
+      let deletedCount = 0;
+      let failedCount = 0;
+      const failedTutors = [];
+
+      for (const tutorId of selectedTutors) {
+        const hasBookings = await checkTutorHasBookings(tutorId);
+        
+        if (hasBookings) {
+          failedCount++;
+          const tutor = tutors.find(t => t.id === tutorId);
+          failedTutors.push(tutor?.name || 'Unknown');
+        } else {
+          try {
+            await dispatch(removeTutor(tutorId)).unwrap();
+            deletedCount++;
+          } catch (err) {
+            failedCount++;
+            const tutor = tutors.find(t => t.id === tutorId);
+            failedTutors.push(tutor?.name || 'Unknown');
+            console.error('Error deleting tutor:', err);
+          }
+        }
+      }
+
+      // Show results
+      if (deletedCount > 0 && failedCount === 0) {
+        toast.success(`Berhasil menghapus ${deletedCount} tutor`);
+      } else if (deletedCount > 0 && failedCount > 0) {
+        toast.warning('Penghapusan Sebagian Berhasil', {
+          description: `${deletedCount} tutor berhasil dihapus, ${failedCount} tutor gagal dihapus karena masih memiliki booking aktif: ${failedTutors.join(', ')}`
+        });
+      } else {
+        toast.error('Tidak dapat menghapus tutor', {
+          description: `Semua tutor yang dipilih (${failedCount}) masih memiliki booking aktif: ${failedTutors.join(', ')}`
+        });
+      }
+
+      setSelectedTutors([]);
+      setIsBulkDeleteDialogOpen(false);
+    } catch (err) {
+      toast.error('Gagal menghapus tutor', { description: err.message || String(err) });
+      console.error('Bulk delete error:', err);
     }
   };
 
   const openDeleteDialog = (id) => {
     setDeletingTutorId(id);
     setIsDeleteDialogOpen(true);
+  };
+
+  const openBulkDeleteDialog = () => {
+    setIsBulkDeleteDialogOpen(true);
   };
 
   if (initialLoading) {
@@ -150,7 +228,8 @@ const Tutors = () => {
             
             <div className="space-y-4">
               <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-slate-50 dark:bg-slate-900 p-4 grid grid-cols-6 gap-4">
+                <div className="bg-slate-50 dark:bg-slate-900 p-4 grid grid-cols-7 gap-4">
+                  <Skeleton className="h-4" />
                   <Skeleton className="h-4 col-span-2" />
                   <Skeleton className="h-4" />
                   <Skeleton className="h-4" />
@@ -158,7 +237,8 @@ const Tutors = () => {
                   <Skeleton className="h-4" />
                 </div>
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="p-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-6 gap-4 items-center">
+                  <div key={i} className="p-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-7 gap-4 items-center">
+                    <Skeleton className="h-5 w-5" />
                     <div className="flex items-center gap-3 col-span-2">
                       <Skeleton className="h-10 w-10 rounded-full" />
                       <Skeleton className="h-4 w-32" />
@@ -250,6 +330,24 @@ const Tutors = () => {
             </div>
           </div>
 
+          {/* Bulk Actions Bar */}
+          {selectedTutors.length > 0 && (
+            <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
+              <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                {selectedTutors.length} tutor dipilih
+              </span>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={openBulkDeleteDialog}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <FontAwesomeIcon icon={faTrash} className="mr-2 h-4 w-4" />
+                Hapus Yang Dipilih
+              </Button>
+            </div>
+          )}
+
           {filteredTutors.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -279,6 +377,14 @@ const Tutors = () => {
                 <table className="w-full">
                   <thead className="bg-slate-50 dark:bg-slate-900">
                     <tr>
+                      <th className="text-left py-4 px-6">
+                        <Checkbox
+                          checked={isAllSelected}
+                          indeterminate={isSomeSelected}
+                          onCheckedChange={handleSelectAll}
+                          aria-label="Select all tutors"
+                        />
+                      </th>
                       <th className="text-left py-4 px-6 font-semibold text-sm text-slate-700 dark:text-slate-300">Nama</th>
                       <th className="text-left py-4 px-6 font-semibold text-sm text-slate-700 dark:text-slate-300">Email</th>
                       <th className="text-left py-4 px-6 font-semibold text-sm text-slate-700 dark:text-slate-300">Subjek</th>
@@ -294,6 +400,8 @@ const Tutors = () => {
                         tutor={tutor}
                         onEdit={handleOpenDialog}
                         onDelete={openDeleteDialog}
+                        isSelected={selectedTutors.includes(tutor.id)}
+                        onSelectChange={handleSelectTutor}
                       />
                     ))}
                   </tbody>
@@ -327,6 +435,7 @@ const Tutors = () => {
         editingTutor={editingTutor}
       />
 
+      {/* Single Delete Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -344,6 +453,32 @@ const Tutors = () => {
               className="bg-red-600 hover:bg-red-700"
             >
               Hapus
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk Delete Dialog */}
+      <Dialog open={isBulkDeleteDialogOpen} onOpenChange={setIsBulkDeleteDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">Konfirmasi Hapus Massal</DialogTitle>
+            <DialogDescription>
+              Apakah Anda yakin ingin menghapus {selectedTutors.length} tutor yang dipilih? 
+              Tutor yang masih memiliki booking aktif tidak akan dihapus. 
+              Tindakan ini tidak dapat dibatalkan.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsBulkDeleteDialogOpen(false)}>Batal</Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleBulkDelete} 
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              <FontAwesomeIcon icon={faTrash} className="mr-2 h-4 w-4" />
+              Hapus {selectedTutors.length} Tutor
             </Button>
           </DialogFooter>
         </DialogContent>

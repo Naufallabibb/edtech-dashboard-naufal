@@ -1,4 +1,5 @@
 import { Button } from './ui/button';
+import { Checkbox } from './ui/checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,9 +8,16 @@ const getAvatarUrl = (name) => {
   return `https://avatar.iran.liara.run/public?username=${username}`;
 };
 
-const TutorCard = ({ tutor, onEdit, onDelete }) => {
+const TutorCard = ({ tutor, onEdit, onDelete, isSelected, onSelectChange }) => {
   return (
     <tr className="hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+      <td className="py-4 px-6">
+        <Checkbox
+          checked={isSelected}
+          onCheckedChange={() => onSelectChange(tutor.id)}
+          aria-label={`Select ${tutor.name}`}
+        />
+      </td>
       <td className="py-4 px-6">
         <div className="flex items-center gap-3">
           <img 

@@ -66,38 +66,56 @@ const Dashboard = () => {
 
   // Calculate real growth percentage (current week vs previous week)
   const calculateGrowth = () => {
-    if (bookings.length === 0) return '0';
+    if (bookings.length === 0) {
+      return { percentage: '0', isPositive: true };
+    }
     
     const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(today.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+    
     const fourteenDaysAgo = new Date();
     fourteenDaysAgo.setDate(today.getDate() - 13);
+    fourteenDaysAgo.setHours(0, 0, 0, 0);
     
     const currentWeekStart = sevenDaysAgo.toISOString().split('T')[0];
     const currentWeekEnd = today.toISOString().split('T')[0];
     const previousWeekStart = fourteenDaysAgo.toISOString().split('T')[0];
     const previousWeekEnd = new Date(sevenDaysAgo.getTime() - 86400000).toISOString().split('T')[0];
     
-    const currentWeekBookings = bookings.filter(b => 
-      b.date >= currentWeekStart && b.date <= currentWeekEnd
-    ).length;
+    const currentWeekBookings = bookings.filter(b => {
+      if (!b.date) return false;
+      const bookingDate = b.date.split('T')[0];
+      return bookingDate >= currentWeekStart && bookingDate <= currentWeekEnd;
+    });
     
-    const previousWeekBookings = bookings.filter(b => 
-      b.date >= previousWeekStart && b.date <= previousWeekEnd
-    ).length;
+    const previousWeekBookings = bookings.filter(b => {
+      if (!b.date) return false;
+      const bookingDate = b.date.split('T')[0];
+      return bookingDate >= previousWeekStart && bookingDate <= previousWeekEnd;
+    });
     
-    if (previousWeekBookings === 0) {
-      return currentWeekBookings > 0 ? '+100' : '0';
+    const currentCount = currentWeekBookings.length;
+    const previousCount = previousWeekBookings.length;
+    
+    if (previousCount === 0) {
+      const percentage = currentCount > 0 ? '+100' : '0';
+      return { percentage, isPositive: currentCount >= 0 };
     }
     
-    const growth = ((currentWeekBookings - previousWeekBookings) / previousWeekBookings) * 100;
-    return growth > 0 ? `+${growth.toFixed(0)}` : growth.toFixed(0);
+    const growth = ((currentCount - previousCount) / previousCount) * 100;
+    const percentage = growth > 0 ? `+${growth.toFixed(0)}` : growth.toFixed(0);
+    
+    return { percentage, isPositive: growth >= 0 };
   };
 
   const totalWeeklyBookings = calculateWeeklyTotal();
-  const growthPercentage = calculateGrowth();
-  const isPositiveGrowth = parseFloat(growthPercentage) >= 0;
+  const growthData = calculateGrowth();
+  const growthPercentage = growthData.percentage;
+  const isPositiveGrowth = growthData.isPositive;
 
   // Custom Tooltip Component
   const CustomTooltip = ({ active, payload }) => {
@@ -126,7 +144,7 @@ const Dashboard = () => {
     upcomingPage * upcomingItemsPerPage
   );
 
-  // Pagination for Tutors
+  // Pagination for Tutors (already sorted by newest first from Redux)
   const tutorTotalPages = Math.ceil(tutors.length / tutorItemsPerPage);
   const paginatedTutors = tutors.slice(
     (tutorPage - 1) * tutorItemsPerPage,
@@ -260,7 +278,7 @@ const Dashboard = () => {
           value={`${growthPercentage}%`}
           icon={faChartLine}
           description="vs minggu lalu"
-          gradient="bg-gradient-to-br from-[#e8217b] to-[#d8116b]"
+          gradient={`bg-gradient-to-br ${isPositiveGrowth ? 'from-green-500 to-green-600' : 'from-red-500 to-red-600'}`}
         />
       </div>
 

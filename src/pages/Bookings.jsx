@@ -4,13 +4,14 @@ import { useSearchParams } from 'react-router-dom';
 import { fetchBookings, addBooking, editBooking, removeBooking } from '../store/slices/bookingsSlice';
 import { fetchTutors } from '../store/slices/tutorsSlice';
 import { Button } from '../components/ui/button';
+import { Checkbox } from '../components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Skeleton } from '../components/ui/skeleton';
 import { Alert, AlertDescription } from '../components/ui/alert';
 import { toast } from 'sonner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faCalendar, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCalendar, faCircleExclamation, faTrash } from '@fortawesome/free-solid-svg-icons';
 import BookingCard from '../components/BookingCard';
 import BookingForm from '../components/BookingForm';
 import Pagination from '../components/Pagination';
@@ -26,8 +27,10 @@ const Bookings = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isBulkDeleteDialogOpen, setIsBulkDeleteDialogOpen] = useState(false);
   const [editingBooking, setEditingBooking] = useState(null);
   const [deletingBookingId, setDeletingBookingId] = useState(null);
+  const [selectedBookings, setSelectedBookings] = useState([]);
   const [formData, setFormData] = useState({
     tutorId: '', tutorName: '', tutorEmail: '', tutorSubject: '',
     studentName: '', date: '', startTime: '', endTime: '', status: 'scheduled'
@@ -45,18 +48,11 @@ const Bookings = () => {
     const range = searchParams.get('range');
     
     if (range === 'next3d' && !toastShownRef.current) {
-      // Auto-filter ke Scheduled (karena upcoming = scheduled)
       setStatusFilter('scheduled');
-      
-      // Tampilkan notifikasi (hanya sekali)
       toast.info('Filter Diterapkan', {
         description: 'Menampilkan booking terjadwal untuk 3 hari ke depan'
       });
-      
-      // Set flag bahwa toast sudah ditampilkan
       toastShownRef.current = true;
-      
-      // Bersihkan query parameter dari URL
       setSearchParams({});
     }
   }, [searchParams, setSearchParams]);
@@ -71,6 +67,26 @@ const Bookings = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // Select/Deselect handlers
+  const handleSelectBooking = (bookingId) => {
+    setSelectedBookings(prev => 
+      prev.includes(bookingId) 
+        ? prev.filter(id => id !== bookingId)
+        : [...prev, bookingId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedBookings.length === paginatedBookings.length) {
+      setSelectedBookings([]);
+    } else {
+      setSelectedBookings(paginatedBookings.map(b => b.id));
+    }
+  };
+
+  const isAllSelected = paginatedBookings.length > 0 && selectedBookings.length === paginatedBookings.length;
+  const isSomeSelected = selectedBookings.length > 0 && selectedBookings.length < paginatedBookings.length;
 
   const validateForm = () => {
     const newErrors = {};
@@ -146,8 +162,9 @@ const Bookings = () => {
         toast.success('Booking berhasil ditambahkan');
       }
       setIsDialogOpen(false);
-    } catch (error) {
-      toast.error('Gagal menyimpan booking', { description: error });
+    } catch (err) {
+      toast.error('Gagal menyimpan booking', { description: String(err) });
+      console.error('Submit error:', err);
     }
   };
 
@@ -157,14 +174,55 @@ const Bookings = () => {
       toast.success('Booking berhasil dihapus');
       setIsDeleteDialogOpen(false);
       setDeletingBookingId(null);
-    } catch (error) {
-      toast.error('Gagal menghapus booking', { description: error });
+    } catch (err) {
+      toast.error('Gagal menghapus booking', { description: String(err) });
+      console.error('Delete error:', err);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    try {
+      let deletedCount = 0;
+      let failedCount = 0;
+
+      for (const bookingId of selectedBookings) {
+        try {
+          await dispatch(removeBooking(bookingId)).unwrap();
+          deletedCount++;
+        } catch (err) {
+          failedCount++;
+          console.error('Error deleting booking:', err);
+        }
+      }
+
+      // Show results
+      if (deletedCount > 0 && failedCount === 0) {
+        toast.success(`Berhasil menghapus ${deletedCount} booking`);
+      } else if (deletedCount > 0 && failedCount > 0) {
+        toast.warning('Penghapusan Sebagian Berhasil', {
+          description: `${deletedCount} booking berhasil dihapus, ${failedCount} booking gagal dihapus`
+        });
+      } else {
+        toast.error('Gagal menghapus booking', {
+          description: `Semua booking yang dipilih (${failedCount}) gagal dihapus`
+        });
+      }
+
+      setSelectedBookings([]);
+      setIsBulkDeleteDialogOpen(false);
+    } catch (err) {
+      toast.error('Gagal menghapus booking', { description: err.message || String(err) });
+      console.error('Bulk delete error:', err);
     }
   };
 
   const openDeleteDialog = (id) => {
     setDeletingBookingId(id);
     setIsDeleteDialogOpen(true);
+  };
+
+  const openBulkDeleteDialog = () => {
+    setIsBulkDeleteDialogOpen(true);
   };
 
   // Enhanced Skeleton
@@ -191,7 +249,8 @@ const Bookings = () => {
             
             <div className="space-y-4">
               <div className="rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-                <div className="bg-slate-50 dark:bg-slate-900 p-4 grid grid-cols-6 gap-4">
+                <div className="bg-slate-50 dark:bg-slate-900 p-4 grid grid-cols-7 gap-4">
+                  <Skeleton className="h-4" />
                   <Skeleton className="h-4" />
                   <Skeleton className="h-4" />
                   <Skeleton className="h-4" />
@@ -200,7 +259,8 @@ const Bookings = () => {
                   <Skeleton className="h-4" />
                 </div>
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="p-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-6 gap-4 items-center">
+                  <div key={i} className="p-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-7 gap-4 items-center">
+                    <Skeleton className="h-5 w-5" />
                     <div className="flex items-center gap-3">
                       <Skeleton className="h-10 w-10 rounded-full" />
                       <div className="space-y-2">
@@ -303,6 +363,24 @@ const Bookings = () => {
             </Button>
           </div>
 
+          {/* Bulk Actions Bar */}
+          {selectedBookings.length > 0 && (
+            <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-center justify-between">
+              <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                {selectedBookings.length} booking dipilih
+              </span>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={openBulkDeleteDialog}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <FontAwesomeIcon icon={faTrash} className="mr-2 h-4 w-4" />
+                Hapus Yang Dipilih
+              </Button>
+            </div>
+          )}
+
           {filteredBookings.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -334,6 +412,14 @@ const Bookings = () => {
                 <table className="w-full">
                   <thead className="bg-slate-50 dark:bg-slate-900">
                     <tr>
+                      <th className="text-left py-4 px-6">
+                        <Checkbox
+                          checked={isAllSelected}
+                          indeterminate={isSomeSelected}
+                          onCheckedChange={handleSelectAll}
+                          aria-label="Select all bookings"
+                        />
+                      </th>
                       <th className="text-left py-4 px-6 font-semibold text-sm text-slate-700 dark:text-slate-300">Tutor</th>
                       <th className="text-left py-4 px-6 font-semibold text-sm text-slate-700 dark:text-slate-300">Siswa</th>
                       <th className="text-left py-4 px-6 font-semibold text-sm text-slate-700 dark:text-slate-300">Tanggal</th>
@@ -349,6 +435,8 @@ const Bookings = () => {
                         booking={booking}
                         onEdit={handleOpenDialog}
                         onDelete={openDeleteDialog}
+                        isSelected={selectedBookings.includes(booking.id)}
+                        onSelectChange={handleSelectBooking}
                       />
                     ))}
                   </tbody>
@@ -384,6 +472,7 @@ const Bookings = () => {
         onTutorChange={handleTutorChange}
       />
 
+      {/* Single Delete Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -401,6 +490,31 @@ const Bookings = () => {
               className="bg-red-600 hover:bg-red-700"
             >
               Hapus
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk Delete Dialog */}
+      <Dialog open={isBulkDeleteDialogOpen} onOpenChange={setIsBulkDeleteDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">Konfirmasi Hapus Massal</DialogTitle>
+            <DialogDescription>
+              Apakah Anda yakin ingin menghapus {selectedBookings.length} booking yang dipilih? 
+              Tindakan ini tidak dapat dibatalkan.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsBulkDeleteDialogOpen(false)}>Batal</Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleBulkDelete} 
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              <FontAwesomeIcon icon={faTrash} className="mr-2 h-4 w-4" />
+              Hapus {selectedBookings.length} Booking
             </Button>
           </DialogFooter>
         </DialogContent>
