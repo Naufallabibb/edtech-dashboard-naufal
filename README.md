@@ -557,28 +557,28 @@ Semua form menggunakan validasi client-side dengan feedback real-time:
 ## 📸 Screenshot
 
 ### Login Page
-
 *Clean dan modern login interface dengan ilustrasi di desktop*
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dc6a7dad-631a-46d8-bcc0-bff59612602b" />
 
 ### Dashboard
-
 *Overview analytics dengan charts dan statistics cards*
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/811d4595-8a69-4ceb-8da8-c30e40e577f5" />
 
 ### Tutors Management
-
 *Complete CRUD interface untuk manajemen tutor*
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3b27d2fa-a27d-4cae-a787-63242f891efe" />
 
 ### Bookings Management
-
 *Comprehensive booking scheduler dengan filter dan search*
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0e106792-1df0-4033-b8d4-dc2f15615844" />
 
 ### Dark Mode
-
 *Full dark mode support di semua halaman*
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dc9fae28-990f-43fe-bae8-c1cb704ee9ba" />
 
 ### Mobile Responsive
-
 *Optimized untuk mobile devices dengan sidebar collapse*
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c8b0d6c8-1fa7-4658-87a3-ec240ff9f6de" />
 
 ## 🏗 Arsitektur Aplikasi
 
