@@ -1,10 +1,18 @@
-# 🎓 EdTech Admin Panel - Platform Pembelajaran Matematika Interaktif
+t
+
+# 🎓 EdTech Dashboard - Platform Manajemen Pembelajaran
+
+![EdTech Dashboard](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-12.4.0-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Redux](https://img.shields.io/badge/Redux_Toolkit-2.9.2-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4.1.16-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+Platform dashboard interaktif untuk mengelola tutor dan booking sesi pembelajaran dengan fitur real-time analytics, dark mode, smart sorting, dan responsive design.
 
 ## 📋 Daftar Isi
 
 * Tentang Proyek
 * Fitur Utama
-* Demo Video
 * Teknologi yang Digunakan
 * Struktur Folder
 * Instalasi dan Setup
@@ -17,7 +25,7 @@
 
 ## 📖 Tentang Proyek
 
-**EdTech Admin Panel** adalah aplikasi web berbasis React.js yang dirancang untuk mengelola platform pembelajaran matematika interaktif. Aplikasi ini menyediakan interface admin yang lengkap dengan fitur manajemen tutor, penjadwalan booking, serta dashboard analytics yang informatif.
+**EdTech Dashboard** adalah aplikasi web berbasis React.js yang dirancang untuk mengelola platform pembelajaran matematika interaktif. Aplikasi ini menyediakan interface admin yang lengkap dengan fitur manajemen tutor, penjadwalan booking, serta dashboard analytics yang informatif dengan real-time data synchronization.
 
 Proyek ini dibuat sebagai bagian dari **Technical Test Web Developer Internship** di EdTech Indonesia, dengan fokus pada:
 
@@ -27,6 +35,8 @@ Proyek ini dibuat sebagai bagian dari **Technical Test Web Developer Internship*
 * ✅ UI/UX responsif dengan TailwindCSS
 * ✅ Dark Mode Support
 * ✅ Real-time Data Synchronization
+* ✅ Smart Data Sorting & Filtering
+* ✅ Dynamic Analytics & Growth Tracking
 
 ## ✨ Fitur Utama
 
@@ -36,44 +46,125 @@ Proyek ini dibuat sebagai bagian dari **Technical Test Web Developer Internship*
 * Protected Routes untuk keamanan aplikasi
 * Logout dengan konfirmasi dialog
 * Session management otomatis
+* Loading states yang smooth
 
-### 📊 Dashboard
+### 📊 Dashboard Analytics
 
-* **Statistics Cards** : Total Tutors, Total Bookings, Upcoming Sessions, Growth Rate
-* **Weekly Bookings Chart** : Visualisasi data booking 7 hari terakhir menggunakan Recharts
-* **Upcoming Sessions** : Daftar sesi pembelajaran 3 hari ke depan
-* **Latest Tutors** : Preview tutor terbaru dengan pagination
+* **Dynamic Statistics Cards** :
+* Total Tutors dengan jumlah tutor aktif
+* Total Bookings dengan jumlah completed
+* Upcoming Sessions (3 hari ke depan)
+* **Growth Percentage** - Perhitungan dinamis perbandingan booking minggu ini vs minggu lalu
+* **Weekly Bookings Chart** :
+* Visualisasi data booking 7 hari terakhir menggunakan Recharts
+* Area chart dengan gradient Study.io branding
+* Interactive tooltip dengan informasi detail
+* Real-time data dari Firebase
+* Dynamic trend indicator (up/down dengan percentage)
+* **Upcoming Sessions** :
+* Daftar sesi pembelajaran 3 hari ke depan
+* **Smart sorting by date & time** (nearest first)
+* Avatar tutor dengan fallback
+* Pagination support
+* **Latest Tutors** :
+* Preview tutor terbaru
+* **Prioritized newest tutors** (sorted by creation date)
+* Status badge dan hourly rate
+* Pagination support
 * Real-time data updates dari Firestore
 
 ### 👨‍🏫 Manajemen Tutor
 
-* CRUD lengkap untuk data tutor
+* **CRUD Operations** :
+* Create, Read, Update, Delete tutor
 * Form validation komprehensif
-* Search dan filter berdasarkan status (Active/Inactive)
+* Real-time updates
+* **Smart Data Management** :
+* **Newest tutors appear first** - Otomatis prioritas data terbaru di atas
+* Tutors sorted by creation date (descending)
+* **Bulk Actions** :
+* **Multi-select tutors** dengan checkbox
+* **Bulk delete** dengan validation
+* Check tutors dengan booking aktif sebelum delete
+* Warning untuk tutors yang tidak bisa dihapus
+* **Filtering & Search** :
+* Search real-time berdasarkan nama, email, atau subjek
+* Filter berdasarkan status (All, Active, Inactive)
+* Badge counter untuk setiap filter
+* **UI Features** :
 * Tabel responsif dengan pagination
 * Avatar generator otomatis
-* Subjects selection: 24+ mata pelajaran tersedia
-* Hourly rate management dalam Rupiah (Rp)
+* 24+ subjects selection
+* Hourly rate dalam format Rupiah (Rp)
+* Empty states dengan ilustrasi
 
 ### 📅 Manajemen Booking
 
-* CRUD lengkap untuk booking sesi pembelajaran
-* Dropdown tutor dengan informasi lengkap (nama, subject, rate)
-* Validasi tanggal dan waktu (tidak boleh masa lalu)
+* **CRUD Operations** :
+* Create, Read, Update, Delete booking
+* Form validation lengkap
+* Real-time sync dengan Firestore
+* **Smart Data Management** :
+* **Automatic sorting by nearest date & time** - Booking terdekat selalu di atas
+* Re-sort otomatis setelah add/edit
+* Consistent sorting across all views
+* **Bulk Actions** :
+* **Multi-select bookings** dengan checkbox
+* **Bulk delete** untuk hapus multiple bookings sekaligus
+* Confirmation dialog untuk safety
+* Success/error feedback dengan toast
+* **Filtering** :
 * Filter berdasarkan status: Scheduled, Completed, Cancelled
-* Informasi detail: Tutor, Student, Date, Time, Status
-* Responsive table layout dengan pagination
+* Badge counter per status
+* All bookings view
+* **Form Features** :
+* Dropdown tutor dengan informasi lengkap (nama, subject, rate)
+* Tutor info card setelah selection
+* Date picker (tidak boleh masa lalu)
+* Time validation (end time > start time)
 * Warning alert jika belum ada tutor aktif
+* **UI Features** :
+* Responsive table dengan avatar
+* Pagination dengan kustomisasi items per page
+* Status badges dengan color coding
+* Format tanggal Indonesia
+* Empty states kondisional
 
 ### 🎨 UI/UX Features
 
-* **Dark Mode** : Toggle tema terang/gelap dengan transisi smooth
-* **Skeleton Loading** : Loading state yang informatif
-* **Toast Notifications** : Feedback real-time untuk setiap aksi (Sonner)
-* **Responsive Design** : Mobile-first approach, optimal di semua device
-* **Custom Scrollbar** : Gradient scrollbar dengan StudyIO branding
-* **Empty States** : Ilustrasi dan call-to-action untuk data kosong
-* **Modal Forms** : Dialog forms yang clean dan user-friendly
+* **Dark Mode** :
+* Toggle tema terang/gelap di header
+* Smooth transitions
+* Persistent preference (localStorage)
+* Support untuk semua komponen
+* **Skeleton Loading** :
+* Informative loading states
+* Menyerupai layout final
+* Dark mode support
+* **Toast Notifications** (Sonner):
+  * Success, Error, Warning, Info notifications
+  * Position: top-right
+  * Rich colors
+  * Auto-dismiss
+* **Responsive Design** :
+* Mobile-first approach
+* Breakpoints: mobile, tablet, desktop
+* Sidebar collapse di mobile dengan overlay
+* Touch-friendly buttons
+* **Custom Scrollbar** :
+* Gradient scrollbar dengan Study.io branding
+* Smooth hover effects
+* Dark mode variant
+* **Empty States** :
+* Ilustrasi icon
+* Descriptive messages
+* Call-to-action buttons
+* Kondisional berdasarkan context (search vs no data)
+* **Form Validation** :
+* Real-time error messages
+* Required field indicators (*)
+* Border highlighting untuk errors
+* Auto-clear errors saat typing
 
 ## 🛠 Teknologi yang Digunakan
 
@@ -85,41 +176,42 @@ Proyek ini dibuat sebagai bagian dari **Technical Test Web Developer Internship*
 
 ### State Management
 
-* **Redux Toolkit 2.9.2** - State Management
+* **Redux Toolkit 2.9.2** - State Management dengan async thunks
 * **React Redux 9.2.0** - React bindings untuk Redux
 
 ### Backend & Database
 
-* **Firebase 12.4.0** - Authentication & Firestore Database
-  * Firebase Authentication - User authentication
-  * Cloud Firestore - NoSQL database
+* **Firebase 12.4.0** :
+* Firebase Authentication - User authentication
+* Cloud Firestore - NoSQL database dengan real-time sync
 
 ### UI Framework & Styling
 
 * **TailwindCSS 4.1.16** - Utility-first CSS Framework
 * **@tailwindcss/vite 4.1.16** - Tailwind Vite Plugin
 * **tw-animate-css 1.4.0** - Animation utilities
-* **Radix UI** - Headless UI Components
+* **Radix UI** - Headless accessible UI Components:
   * @radix-ui/react-dialog
   * @radix-ui/react-select
   * @radix-ui/react-alert-dialog
+  * @radix-ui/react-checkbox
   * @radix-ui/react-separator
   * @radix-ui/react-label
 
+### Data Visualization & Icons
+
+* **Recharts 2.15.4** - Chart library untuk dashboard analytics
+* **FontAwesome 7.1.0** - Comprehensive icon library
+
 ### Additional Libraries
 
-* **Recharts 2.15.4** - Chart visualization untuk dashboard
-* **FontAwesome 7.1.0** - Icon library
-* **Sonner 2.0.7** - Toast notifications
-* **next-themes 0.4.6** - Theme management (Dark/Light mode)
-* **React Hook Form 7.65.0** - Form state management
-* **Zod 4.1.12** - Schema validation
+* **Sonner 2.0.7** - Modern toast notifications
+* **next-themes 0.4.6** - Theme management system
 * **clsx & tailwind-merge** - Conditional className utilities
 
 ## 📁 Struktur Folder
 
 ```
-
 EDTECH_NAUFAL/
 │
 ├── src/
@@ -127,7 +219,7 @@ EDTECH_NAUFAL/
 │   │   └── main.css                    # Global styles & TailwindCSS config
 │   │
 │   ├── components/
-│   │   ├── ui/                         # Reusable UI components (ShacnUI)
+│   │   ├── ui/                         # Reusable UI components (ShadcnUI)
 │   │   ├── BookingCard.jsx             # Booking table row component
 │   │   ├── BookingForm.jsx             # Add/Edit booking modal form
 │   │   ├── Layout.jsx                  # Main layout with sidebar & header
@@ -170,7 +262,7 @@ EDTECH_NAUFAL/
 │
 ├── public/
 │   ├── edtech_logo.svg                 # App logo
-│   └── edtech_login.png                # Login illustration
+│   ├── edtech_login.png                # Login illustration
 │   └── edtech_title.png                # Title logo
 |
 ├── .env.example                        # Environment variables template
@@ -193,38 +285,30 @@ Pastikan Anda telah menginstal:
 
 ### Langkah 1: Clone Repository
 
-bash
-
 ```bash
 git clone https://github.com/Naufallabibb/edtech-dashboard-naufal.git
-cd edtech-admin-panel
+cd edtech-dashboard-naufal
 ```
 
 ### Langkah 2: Install Dependencies
 
-bash
-
 ```bash
-npminstall
+npm install
 # atau
-yarninstall
+yarn install
 # atau
-pnpminstall
+pnpm install
 ```
 
 ### Langkah 3: Setup Environment Variables
 
 1. Copy file `.env.example` menjadi `.env`:
 
-bash
-
 ```bash
 cp .env.example .env
 ```
 
 2. Buka file `.env` dan isi dengan kredensial Firebase Anda:
-
-env
 
 ```env
 VITE_FIREBASE_API_KEY=your_api_key_here
@@ -241,7 +325,7 @@ VITE_FIREBASE_APP_ID=your_app_id_here
 
 1. Kunjungi [Firebase Console](https://console.firebase.google.com/)
 2. Klik **"Add Project"** atau **"Create a project"**
-3. Berikan nama project (contoh: `edtech-admin-panel`)
+3. Berikan nama project (contoh: `edtech-dashboard-naufal`)
 4. Ikuti wizard setup hingga selesai
 
 ### 2. Enable Authentication
@@ -255,25 +339,23 @@ VITE_FIREBASE_APP_ID=your_app_id_here
 
 1. Buka **Firestore Database** dari sidebar
 2. Klik **"Create database"**
-3. Pilih **Start in production mode** (kita akan set rules nanti)
-4. Pilih location server (pilih yang terdekat dengan Indonesia, misalnya `asia-southeast1`)
+3. Pilih **Start in production mode**
+4. Pilih location server (pilih yang terdekat, misalnya `asia-southeast1`)
 5. Klik **Enable**
 
 ### 4. Set Firestore Security Rules
 
 Setelah database dibuat, buka **Rules** tab dan ganti dengan:
 
-javascript
-
 ```javascript
-rules_version ='2';
-service cloud.firestore{
+rules_version = '2';
+service cloud.firestore {
   match /databases/{database}/documents {
-// Allow authenticated users to read and write all documents
-    match /{document=**}{
-      allow read,write:if request.auth!=null;
-}
-}
+    // Allow authenticated users to read and write all documents
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
 }
 ```
 
@@ -281,35 +363,13 @@ Klik **Publish** untuk menerapkan rules.
 
 ### 5. Create User Account
 
-Ada 2 cara untuk membuat user admin:
-
-#### Opsi A: Melalui Firebase Console (Recommended)
+Di Firebase Console:
 
 1. Buka **Authentication** > **Users**
 2. Klik **"Add user"**
 3. Masukkan email: `admin@edtech.com`
 4. Masukkan password: `admin123` (atau password pilihan Anda)
 5. Klik **"Add user"**
-
-#### Opsi B: Temporary Registration (Not recommended for production)
-
-Jika Anda ingin membuat halaman registrasi sementara, Anda bisa menambahkan:
-
-javascript
-
-```javascript
-// Temporary - untuk development only
-import{ createUserWithEmailAndPassword }from'firebase/auth';
-
-constregisterUser=async()=>{
-try{
-awaitcreateUserWithEmailAndPassword(auth,'admin@edtech.com','admin123');
-console.log('User created successfully');
-}catch(error){
-console.error('Error creating user:', error);
-}
-};
-```
 
 ### 6. Get Firebase Configuration
 
@@ -322,51 +382,9 @@ console.error('Error creating user:', error);
 7. Copy konfigurasi Firebase yang muncul
 8. Paste nilai-nilai tersebut ke file `.env` Anda
 
-### 7. Create Initial Collections (Optional)
-
-Anda bisa membuat struktur collection awal:
-
-#### Collection: `tutors`
-
-javascript
-
-```javascript
-{
-name:"John Doe",
-email:"john@example.com",
-subject:"Matematika",
-hourlyRate:50000,
-status:"active",
-createdAt:Timestamp,
-updatedAt:Timestamp
-}
-```
-
-#### Collection: `bookings`
-
-javascript
-
-```javascript
-{
-tutorId:"tutor_doc_id",
-tutorName:"John Doe",
-tutorEmail:"john@example.com",
-tutorSubject:"Matematika",
-studentName:"Jane Smith",
-date:"2025-01-15",
-startTime:"10:00",
-endTime:"11:00",
-status:"scheduled",
-createdAt:Timestamp,
-updatedAt:Timestamp
-}
-```
-
 ## 🏃‍♂️ Menjalankan Aplikasi
 
 ### Development Mode
-
-bash
 
 ```bash
 npm run dev
@@ -376,8 +394,6 @@ Aplikasi akan berjalan di: `http://localhost:5173`
 
 ### Build untuk Production
 
-bash
-
 ```bash
 npm run build
 ```
@@ -385,8 +401,6 @@ npm run build
 Output build akan tersimpan di folder `dist/`
 
 ### Preview Production Build
-
-bash
 
 ```bash
 npm run preview
@@ -405,180 +419,214 @@ Password: admin123
 
 ### 1. Authentication Flow
 
-* **Login Page** (`/login`)
+* **Login Page** (`/login`):
   * Form dengan validasi email dan password
   * Password visibility toggle
   * Error handling dengan toast notification
-  * Redirect otomatis ke dashboard setelah login berhasil
+  * Redirect otomatis ke dashboard setelah login
   * Responsive design dengan ilustrasi di desktop
-* **Protected Routes**
-  * Semua route kecuali `/login` memerlukan autentikasi
-  * Redirect otomatis ke login jika tidak terautentikasi
-  * Loading state saat memeriksa auth status
-* **Logout**
-  * Konfirmasi dialog sebelum logout
-  * Clear session dan redirect ke login
-  * Toast notification untuk feedback
+* **Protected Routes** :
+* Semua route kecuali `/login` memerlukan autentikasi
+* Redirect otomatis ke login jika belum login
+* Loading state saat memeriksa auth status
+* **Logout** :
+* Konfirmasi dialog sebelum logout
+* Clear session dan redirect ke login
+* Toast notification untuk feedback
 
 ### 2. Dashboard Analytics
 
-* **Statistics Cards**
-  * Total Tutors dengan jumlah tutor aktif
-  * Total Bookings dengan jumlah completed
-  * Upcoming Sessions (3 hari ke depan)
-  * Growth Percentage (perbandingan minggu ini vs minggu lalu)
-* **Weekly Bookings Chart**
-  * Area chart dengan gradient StudyIO branding
-  * Data 7 hari terakhir
-  * Custom tooltip dengan informasi detail
-  * Responsive dan interactive
-* **Upcoming Sessions List**
-  * Menampilkan 5 booking terjadwal terdekat
-  * Avatar tutor dengan fallback
-  * Informasi lengkap: tutor, siswa, subjek, tanggal, waktu
-  * Pagination support
-  * Link ke halaman bookings lengkap
-* **Latest Tutors List**
-  * Menampilkan tutor terbaru
-  * Status badge (Aktif/Tidak Aktif)
-  * Hourly rate dalam format Rupiah
-  * Pagination support
-  * Link ke halaman tutors lengkap
+* **Dynamic Statistics Cards** :
+* **Total Tutors** : Jumlah total dengan breakdown aktif/tidak aktif
+* **Total Bookings** : Jumlah total dengan completed count
+* **Upcoming Sessions** : Count 3 hari ke depan
+* **Growth Percentage** :
+  * Perhitungan dinamis berdasarkan data real dari Firebase
+  * Comparison minggu ini (7 hari terakhir) vs minggu lalu (7 hari sebelumnya)
+  * Color-coded: Hijau (positive), Merah (negative)
+  * Format: +X% atau -X%
+* **Weekly Bookings Chart** :
+* Visualisasi area chart dengan Recharts
+* Data 7 hari terakhir dari Firebase
+* Gradient fill dengan Study.io branding
+* Interactive tooltip menampilkan jumlah booking per hari
+* Dynamic trend text: "Trending up/down by X% minggu ini"
+* Total bookings counter minggu ini
+* **Upcoming Sessions List** :
+* **Smart sorting** : Booking terdekat muncul paling atas
+* Sort by date (ascending) kemudian by start time
+* Menampilkan 3 hari ke depan
+* Avatar tutor dengan fallback
+* Info lengkap: tutor, siswa, subjek, tanggal, waktu
+* Pagination support (5, 10, 20 items per page)
+* Link "Lihat Semua" ke halaman Bookings
+* **Latest Tutors List** :
+* **Prioritized newest tutors** : Data terbaru di atas
+* Sort by createdAt (descending)
+* Avatar dengan ring border
+* Status badge dengan color coding
+* Hourly rate format Rupiah
+* Pagination support
+* Link "Lihat Semua" ke halaman Tutors
 
 ### 3. Tutors Management
 
-* **List View**
-  * Tabel responsif dengan kolom: Nama, Email, Subjek, Tarif/Jam, Status, Aksi
-  * Search real-time berdasarkan nama, email, atau subjek
-  * Filter berdasarkan status (All, Active, Inactive)
-  * Badge counter untuk setiap filter
-  * Avatar dengan fallback ke service eksternal
-  * Pagination dengan kustomisasi items per page (5, 10, 20, 50)
-  * Empty state dengan ilustrasi dan CTA
-* **Add/Edit Tutor**
-  * Modal form dengan validasi lengkap
-  * Fields: Name, Email, Subject (dropdown 24+ pilihan), Hourly Rate, Status
-  * Real-time error messages
-  * Required field indicators (*)
-  * Dropdown subjects: Matematika, Fisika, Kimia, Biologi, Programming, dll
-  * Auto-format hourly rate dengan thousand separator
-  * Loading state pada tombol submit
-* **Delete Tutor**
-  * Konfirmasi dialog sebelum delete
-  * Validasi: cek apakah tutor memiliki booking aktif
-  * Error handling jika tutor masih memiliki booking
-  * Toast notification untuk feedback
+* **Smart Data Management** :
+* **Newest tutors appear first** secara otomatis
+* Sort by creation timestamp (newest first)
+* Add new tutor → langsung muncul di posisi teratas
+* Konsisten across all views dan pagination
+* **List View** :
+* Tabel responsif dengan kolom lengkap
+* **Multi-select dengan checkbox** untuk bulk actions
+* Search real-time (nama, email, subjek)
+* Filter by status dengan badge counter
+* Avatar generator otomatis
+* Pagination kustomisasi (5, 10, 20, 50 per halaman)
+* Empty state dengan ilustrasi
+* **Bulk Delete** :
+* **Select multiple tutors** dengan checkbox header (select all)
+* Bulk actions bar muncul saat ada selection
+* "Hapus Yang Dipilih" button dengan counter
+* Validation: Check setiap tutor apakah memiliki booking aktif
+* Warning message untuk tutors yang tidak bisa dihapus
+* Partial success handling (delete yang bisa, skip yang punya booking)
+* Toast feedback: "Berhasil menghapus X tutor" atau "X tutor gagal karena masih ada booking"
+* **Add/Edit Tutor** :
+* Modal form dengan validasi
+* Fields: Name, Email, Subject (dropdown 24+ pilihan), Hourly Rate, Status
+* Real-time error messages
+* Required field indicators (*)
+* Auto-format hourly rate
+* Loading state pada submit
+* **Delete Single Tutor** :
+* Konfirmasi dialog
+* Validation: Cek booking aktif
+* Error handling
+* Toast feedback
 
 ### 4. Bookings Management
 
-* **List View**
-  * Tabel responsif dengan kolom: Tutor (dengan avatar), Siswa, Tanggal, Waktu, Status, Aksi
-  * Filter berdasarkan status: All, Scheduled, Completed, Cancelled
-  * Badge counter untuk setiap status
-  * Format tanggal Indonesia (e.g., "15 Jan 2025")
-  * Status badge dengan warna berbeda per status
-  * Pagination support
-  * Warning alert jika belum ada tutor aktif
-  * Empty state dengan kondisional message
-* **Add/Edit Booking**
-  * Modal form dengan 2 column layout di desktop
-  * Tutor dropdown dengan informasi lengkap (nama, subject, rate)
-  * Info card tutor setelah dipilih
-  * Fields: Tutor, Student Name, Date, Time (Start & End), Status
-  * Validasi:
-    * Tanggal tidak boleh di masa lalu
-    * End time harus lebih besar dari start time
-    * Required fields validation
-  * Date picker dengan min date hari ini
-  * Time picker dengan format 24 jam
-  * Disabled submit jika belum ada tutor aktif
-* **Delete Booking**
-  * Konfirmasi dialog sebelum delete
-  * Toast notification untuk feedback
+* **Smart Data Management** :
+* **Automatic sorting by nearest date & time**
+* Bookings terdekat selalu muncul paling atas
+* Sort by date (ascending) → start time (ascending)
+* Re-sort otomatis setelah:
+  * Add new booking
+  * Edit booking (date/time berubah)
+* Konsisten di semua views (All, Scheduled, Completed, Cancelled)
+* **List View** :
+* Tabel responsif dengan avatar tutor
+* **Multi-select dengan checkbox** untuk bulk actions
+* Filter by status dengan badge counter
+* Format tanggal Indonesia (e.g., "27 Okt 2025")
+* Time range display (03:33 - 14:12)
+* Status badges dengan color coding:
+  * Terjadwal (Blue)
+  * Selesai (Green)
+  * Dibatalkan (Red)
+* Pagination support
+* Warning alert jika belum ada tutor aktif
+* **Bulk Delete** :
+* **Select multiple bookings** dengan checkbox header
+* Bulk actions bar dengan counter
+* "Hapus Yang Dipilih" button
+* Confirmation dialog untuk safety
+* Delete all selected sekaligus
+* Toast feedback: "Berhasil menghapus X booking"
+* Error handling per booking (partial delete support)
+* **Add/Edit Booking** :
+* Modal form 2-column di desktop
+* Tutor dropdown dengan info lengkap (nama, subject, rate per jam)
+* Tutor info card setelah selection
+* Fields: Tutor, Student Name, Date, Time (Start & End), Status
+* Validasi:
+  * Date tidak boleh masa lalu (min: today)
+  * End time > start time
+  * All required fields
+* Date & time pickers native HTML5
+* Disabled jika belum ada tutor aktif
+* **Delete Single Booking** :
+* Konfirmasi dialog
+* Toast feedback
 
 ### 5. UI/UX Enhancements
 
-* **Dark Mode**
-  * Toggle button di header
-  * Smooth transition antar tema
-  * Persistent preference (localStorage)
-  * Support untuk semua komponen dan halaman
-* **Skeleton Loading**
-  * Loading state yang informatif untuk semua halaman
-  * Skeleton yang menyerupai layout final
-  * Minimum loading time untuk UX yang lebih baik
-  * Dark mode support untuk skeleton
-* **Toast Notifications (Sonner)**
-  * Success notification (hijau)
-  * Error notification (merah)
-  * Position: top-right
-  * Rich colors untuk better visibility
-  * Auto-dismiss dengan timer
-* **Responsive Design**
-  * Mobile-first approach
-  * Breakpoints: mobile (< 640px), tablet (640-1024px), desktop (> 1024px)
-  * Sidebar collapse di mobile dengan overlay
-  * Responsive tables dengan horizontal scroll
-  * Stacked layout untuk form di mobile
-  * Touch-friendly button sizes
-* **Custom Scrollbar**
-  * Gradient scrollbar dengan warna StudyIO branding
-  * Smooth hover effects
-  * Dark mode variant
-  * Hidden scrollbar dengan show on hover untuk cards
-* **Empty States**
-  * Ilustrasi icon untuk visual feedback
-  * Descriptive message
-  * Call-to-action button
-  * Kondisional message (search vs no data)
-
-### 6. Form Validation
-
-Semua form menggunakan validasi client-side dengan feedback real-time:
-
-* **Required Fields** : Indicator (*) dan error message
-* **Email Format** : Regex validation untuk format email
-* **Number Validation** : Hourly rate harus number positif
-* **Date Validation** : Tidak boleh pilih tanggal masa lalu
-* **Time Validation** : End time harus lebih besar dari start time
-* **Error Display** : Inline error messages di bawah field
-* **Border Highlight** : Red border untuk field dengan error
-* **Auto-clear Error** : Error hilang saat user mulai mengetik
-
-### 7. Data Management
-
-* **Real-time Sync** : Data otomatis sync dengan Firestore
-* **Optimistic Updates** : UI update langsung, rollback jika gagal
-* **Loading States** : Skeleton, spinner, disabled buttons
-* **Error Handling** : Try-catch dengan user-friendly messages
-* **Timestamp** : Auto-generated createdAt dan updatedAt
-* **Data Serialization** : Convert Firebase Timestamp ke ISO string
+* **Dark Mode** :
+* Toggle di header dengan icon sun/moon
+* Smooth transitions
+* Persistent (localStorage)
+* Support semua komponen
+* Color adjustments untuk readability
+* **Skeleton Loading** :
+* Informative loading states
+* Layout menyerupai final content
+* Dark mode support
+* Minimum loading time (1 detik) untuk UX
+* **Toast Notifications** :
+* Success (hijau), Error (merah), Warning (kuning), Info (biru)
+* Position: top-right
+* Rich colors dengan dark mode support
+* Auto-dismiss (3-5 detik)
+* Descriptive messages
+* **Responsive Design** :
+* Mobile-first approach
+* Breakpoints: sm (640px), md (768px), lg (1024px), xl (1280px)
+* Sidebar collapse dengan overlay di mobile
+* Responsive tables dengan horizontal scroll
+* Touch-friendly buttons (min 44x44px)
+* Stacked layouts di mobile
+* **Custom Scrollbar** :
+* Gradient Study.io branding (blue → purple → pink)
+* Smooth hover effects
+* Dark mode variant (lebih terang)
+* Hidden scrollbar untuk dashboard cards (show on hover)
+* **Empty States** :
+* Icon illustrations (FontAwesome)
+* Descriptive messages
+* CTA buttons (e.g., "Tambah Tutor Pertama")
+* Kondisional:
+  * Search result empty vs no data
+  * Filter result empty vs no data
+  * Different message per context
 
 ## 📸 Screenshot
 
 ### Login Page
+
 *Clean dan modern login interface dengan ilustrasi di desktop*
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dc6a7dad-631a-46d8-bcc0-bff59612602b" />
+
+![Login Page](https://github.com/user-attachments/assets/dc6a7dad-631a-46d8-bcc0-bff59612602b)
 
 ### Dashboard
-*Overview analytics dengan charts dan statistics cards*
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/811d4595-8a69-4ceb-8da8-c30e40e577f5" />
+
+*Overview analytics dengan dynamic growth tracking and weekly chart*
+
+![Dashboard](https://github.com/user-attachments/assets/811d4595-8a69-4ceb-8da8-c30e40e577f5)
 
 ### Tutors Management
-*Complete CRUD interface untuk manajemen tutor*
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3b27d2fa-a27d-4cae-a787-63242f891efe" />
+
+*Complete CRUD dengan bulk delete and smart sorting (newest first)*
+
+![1761505227942](image/README/1761505227942.png)
 
 ### Bookings Management
-*Comprehensive booking scheduler dengan filter dan search*
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0e106792-1df0-4033-b8d4-dc2f15615844" />
+
+*Comprehensive scheduler dengan sorting by nearest date and bulk delete*
+
+![1761505126092](image/README/1761505126092.png)
 
 ### Dark Mode
-*Full dark mode support di semua halaman*
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dc9fae28-990f-43fe-bae8-c1cb704ee9ba" />
+
+*Full dark mode support dengan smooth transitions*
+
+![Dark Mode](https://github.com/user-attachments/assets/dc9fae28-990f-43fe-bae8-c1cb704ee9ba)
 
 ### Mobile Responsive
+
 *Optimized untuk mobile devices dengan sidebar collapse*
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c8b0d6c8-1fa7-4658-87a3-ec240ff9f6de" />
+
+![Mobile Responsive](https://github.com/user-attachments/assets/c8b0d6c8-1fa7-4658-87a3-ec240ff9f6de)
 
 ## 🏗 Arsitektur Aplikasi
 
@@ -586,79 +634,113 @@ Semua form menggunakan validasi client-side dengan feedback real-time:
 
 Aplikasi menggunakan Redux Toolkit dengan struktur slice untuk setiap domain:
 
-javascript
-
-```javascript
+```
 store/
 ├── store.js              # Configure store dengan middleware
 └── slices/
     ├── authSlice.js      # Authentication state & thunks
-    ├── tutorsSlice.js    # Tutors state &asyncCRUD thunks
-    └── bookingsSlice.js  # Bookings state &asyncCRUD thunks
+    ├── tutorsSlice.js    # Tutors state & async CRUD thunks
+    └── bookingsSlice.js  # Bookings state & async CRUD thunks
 ```
 
 **Async Thunks:**
 
 * `loginUser` - Login authentication
 * `logoutUser` - Logout dan clear session
-* `fetchTutors` - Get all tutors dari Firestore
-* `addTutor` - Create new tutor
+* `fetchTutors` - Get all tutors (sorted newest first)
+* `addTutor` - Create new tutor (auto appears on top)
 * `editTutor` - Update existing tutor
 * `removeTutor` - Delete tutor
-* `fetchBookings` - Get all bookings
-* `fetchUpcomingBookings` - Get upcoming 3 days bookings
+* `fetchBookings` - Get all bookings (sorted by nearest date)
+* `fetchUpcomingBookings` - Get upcoming 3 days (sorted)
 * `fetchWeeklyBookingsData` - Get weekly chart data
-* `addBooking` - Create new booking
-* `editBooking` - Update existing booking
+* `addBooking` - Create new booking (auto-sorted)
+* `editBooking` - Update booking (re-sorted if date/time changed)
 * `removeBooking` - Delete booking
+
+### Smart Sorting Implementation
+
+**Tutors Sorting:**
+
+```javascript
+// Sort by createdAt descending (newest first)
+tutors.sort((a, b) => {
+  const dateA = new Date(a.createdAt || 0);
+  const dateB = new Date(b.createdAt || 0);
+  return dateB - dateA; // Newest first
+});
+```
+
+**Bookings Sorting:**
+
+```javascript
+// Sort by date & time ascending (nearest first)
+bookings.sort((a, b) => {
+  // Compare dates first
+  const dateCompare = a.date.localeCompare(b.date);
+  if (dateCompare !== 0) return dateCompare;
+  // If dates equal, compare start times
+  return a.startTime.localeCompare(b.startTime);
+});
+```
+
+**Dynamic Growth Calculation:**
+
+```javascript
+// Calculate growth: current week vs previous week
+const currentWeekBookings = bookings.filter(b => 
+  b.date >= currentWeekStart && b.date <= currentWeekEnd
+).length;
+
+const previousWeekBookings = bookings.filter(b => 
+  b.date >= previousWeekStart && b.date <= previousWeekEnd
+).length;
+
+const growth = ((currentWeekBookings - previousWeekBookings) / previousWeekBookings) * 100;
+```
 
 ### Firebase Services
 
 **firestoreHelpers.js** berisi semua Firestore operations:
 
-javascript
-
 ```javascript
 // Tutors CRUD
-createTutor(tutorData)
-getAllTutors()
-getActiveTutors()
+createTutor(tutorData)           // Auto-add createdAt timestamp
+getAllTutors()                   // Returns tutors array
 getTutorById(id)
 updateTutor(id, tutorData)
 deleteTutor(id)
+getActiveTutors()
 
 // Bookings CRUD
-createBooking(bookingData)
-getAllBookings()
+createBooking(bookingData)       // Auto-add createdAt timestamp
+getAllBookings()                 // Returns bookings array
 getBookingById(id)
 updateBooking(id, bookingData)
 deleteBooking(id)
-getUpcomingBookings()
+getUpcomingBookings()            // Next 3 days, sorted
 getBookingsByStatus(status)
 getBookingsByTutor(tutorId)
-checkTutorHasBookings(tutorId)
-getWeeklyBookingsData()
-getBookingsStatistics()
+checkTutorHasBookings(tutorId)   // For delete validation
+getWeeklyBookingsData()          // Last 7 days for chart
 ```
 
 ### Component Structure
 
 * **Pages** : Container components yang connect ke Redux
-* **Components** : Presentational components yang menerima props
-* **UI Components** : Reusable components dari Radix UI + custom styling
-* **Hooks** : Custom hooks untuk logic reuse (useAuth, useTheme)
-* **Context** : Theme context untuk dark mode management
+* **Components** : Presentational components dengan props
+* **UI Components** : Reusable dari Radix UI + custom styling
+* **Hooks** : Custom hooks (useAuth, useTheme)
+* **Context** : Theme context untuk dark mode
 
 ### Routing
 
-javascript
-
-```javascript
-/login          → Loginpage(public)
+```
+/login          → Login page (public)
 /               → Redirect to /dashboard
-/dashboard      → Dashboardwithanalytics(protected)
-/tutors         → Tutorsmanagement(protected)
-/bookings       → Bookingsmanagement(protected)
+/dashboard      → Dashboard with analytics (protected)
+/tutors         → Tutors management (protected)
+/bookings       → Bookings management (protected)
 *               → Redirect to /dashboard
 ```
 
@@ -666,39 +748,35 @@ javascript
 
 **tutors** collection:
 
-javascript
-
 ```javascript
 {
-id: auto-generated,
-name: string,
-email: string,
-subject: string,
-hourlyRate: number,
-status:'active'|'inactive',
-createdAt: timestamp,
-updatedAt: timestamp
+  id: auto-generated,
+  name: string,
+  email: string,
+  subject: string,
+  hourlyRate: number,
+  status: 'active' | 'inactive',
+  createdAt: timestamp,
+  updatedAt: timestamp
 }
 ```
 
 **bookings** collection:
 
-javascript
-
 ```javascript
 {
-id: auto-generated,
-tutorId:string(reference),
-tutorName: string,
-tutorEmail: string,
-tutorSubject: string,
-studentName: string,
-date:string(YYYY-MM-DD),
-startTime:string(HH:mm),
-endTime:string(HH:mm),
-status:'scheduled'|'completed'|'cancelled',
-createdAt: timestamp,
-updatedAt: timestamp
+  id: auto-generated,
+  tutorId: string (reference),
+  tutorName: string,
+  tutorEmail: string,
+  tutorSubject: string,
+  studentName: string,
+  date: string (YYYY-MM-DD),
+  startTime: string (HH:mm),
+  endTime: string (HH:mm),
+  status: 'scheduled' | 'completed' | 'cancelled',
+  createdAt: timestamp,
+  updatedAt: timestamp
 }
 ```
 
@@ -706,244 +784,73 @@ updatedAt: timestamp
 
 ### Color Palette
 
+**Study.io Brand Colors:**
+
+* Primary Blue: `#3babe9`
+* Purple: `#a240e4`
+* Pink: `#a854ab`
+* Magenta: `#e8217b`
+
 **Light Mode:**
 
-- Background: `#F9FAFB` (slate-50)
-- Foreground: `#0F172A` (slate-900)
-- Primary: StudyIO Blue `#3babe9`
-- Secondary: StudyIO Purple `#a240e4`
-- Accent: StudyIO Pink `#a854ab` & Magenta `#e8217b`
-- Border: `#E2E8F0` (slate-200)
+* Background: `#F9FAFB` (slate-50)
+* Foreground: `#0F172A` (slate-900)
+* Border: `#E2E8F0` (slate-200)
 
 **Dark Mode:**
 
-- Background: `#020617` (slate-950)
-- Foreground: `#F8FAFC` (slate-50)
-- Card: `#0F172A` (slate-900)
-- Border: `rgba(255,255,255,0.1)`
+* Background: `#020617` (slate-950)
+* Foreground: `#F8FAFC` (slate-50)
+* Card: `#0F172A` (slate-900)
+* Border: `rgba(255,255,255,0.1)`
 
 ### Typography
 
-- **Primary Font**: Poppins (Google Fonts)
-- **Secondary Font**: Inter (Google Fonts)
-- **Font Weights**: 300, 400, 500, 600, 700
+* **Primary Font** : Poppins (Google Fonts)
+* **Secondary Font** : Inter (Google Fonts)
+* **Font Weights** : 300, 400, 500, 600, 700
 
 ### Spacing & Layout
 
-- **Padding**: 16px base, 24px untuk sections
-- **Border Radius**: 8-12px untuk cards, 0.625rem untuk buttons
-- **Shadows**: Soft shadows dengan blur 10-20px
-- **Breakpoints**:
-  - Mobile: < 640px
-  - Tablet: 640px - 1024px
-  - Desktop: > 1024px
-
-## 🧪 Testing & Development
-
-### Best Practices Implemented
-
-✅ **Code Organization**
-
-- Modular component structure
-- Separation of concerns (services, components, pages)
-- Reusable utility functions
-
-✅ **Performance**
-
-- Lazy loading dengan React.lazy (optional)
-- Memoization untuk expensive computations
-- Optimized re-renders dengan proper React patterns
-
-✅ **Accessibility**
-
-- Semantic HTML elements
-- ARIA labels untuk screen readers
-- Keyboard navigation support
-- Focus management di modals
-
-✅ **Error Handling**
-
-- Try-catch blocks di semua async operations
-- User-friendly error messages
-- Toast notifications untuk feedback
-- Fallback UI untuk error states
-
-✅ **Security**
-
-- Environment variables untuk sensitive data
-- Firebase Security Rules implementation
-- Protected routes dengan authentication check
-- Input sanitization dan validation
-
-## 📦 Dependencies Explanation
-
-### Core Dependencies
-
-- **react & react-dom**: Core library untuk building UI
-- **vite**: Fast build tool dan dev server
-- **react-router-dom**: Client-side routing
-- **@reduxjs/toolkit & react-redux**: State management yang powerful dan efficient
-
-### Firebase & Backend
-
-- **firebase**: Official Firebase SDK untuk web, includes Auth & Firestore
-
-### UI & Styling
-
-- **tailwindcss**: Utility-first CSS framework untuk rapid UI development
-- **@radix-ui/react-***: Headless UI components yang accessible dan customizable
-- **recharts**: Chart library untuk data visualization
-- **sonner**: Modern toast notifications
-- **lucide-react**: Icon library yang lightweight
-
-### Utilities
-
-- **clsx & tailwind-merge**: Untuk conditional dan conflicting className handling
-- **react-hook-form**: Performant form state management
-- **zod**: Schema validation library
-- **next-themes**: Theme management dengan system preference support
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**1. Firebase Configuration Error**
-
-```
-Error:Firebase:Error(auth/invalid-api-key)
-```
-
-**Solution**: Pastikan semua environment variables di `.env` sudah diisi dengan benar
-
-**2. Port Already in Use**
-
-```
-Error:Port5173 is already in use
-```
-
-**Solution**: Kill process yang menggunakan port atau ubah port di `vite.config.js`
-
-**3. Build Error: Cannot find module**
-
-```
-Error:Cannot find module '@/components/ui/button'
-```
-
-**Solution**: Check import paths dan pastikan alias `@` sudah dikonfigurasi di `vite.config.js`
-
-**4. Firestore Permission Denied**
-
-```
-Error:Missing or insufficient permissions
-```
-
-**Solution**: Update Firestore Security Rules dan pastikan user sudah terautentikasi
-
-**5. Dark Mode Not Persisting**
-
-```
-Theme resets on page reload
-```
-
- **Solution** : Check localStorage permissions dan pastikan ThemeProvider properly wrapped
-
-## 📝 Future Improvements
-
-Fitur yang bisa ditambahkan untuk development selanjutnya:
-
-* [ ] **Advanced Filtering** : Date range filter untuk bookings
-* [ ] **Export Data** : Export tables ke CSV/PDF
-* [ ] **Real-time Notifications** : WebSocket untuk live updates
-* [ ] **User Roles** : Admin, Tutor, Student dengan permissions berbeda
-* [ ] **Payment Integration** : Stripe/Midtrans untuk payment processing
-* [ ] **Calendar View** : Alternative view untuk bookings
-* [ ] **Analytics Dashboard** : More detailed analytics dan insights
-* [ ] **Multi-language** : i18n support untuk bahasa Indonesia dan English
-* [ ] **File Upload** : Avatar upload untuk tutors
-* [ ] **Email Notifications** : Send email untuk booking reminders
-* [ ] **Mobile App** : React Native version untuk mobile
-* [ ] **Unit Testing** : Jest + React Testing Library
-* [ ] **E2E Testing** : Cypress atau Playwright
-* [ ] **CI/CD Pipeline** : GitHub Actions untuk automated deployment
-
-## 👨‍💻 Kontak
-
-**Developer:** Muhammad Naufal Labib Ramadhan
-
-📧 **Email:** [muhammadnaufallabibramadhan@gmail.com](mailto:muhammadnaufallabibramadhan@gmail.com)
-
-🔗 **GitHub:** [https://github.com/Naufallabibb
-](https://github.com/Naufallabibb)
-
----
-
-## 📄 License
-
-This project is created for  **EdTech Web Developer Internship Technical Test** .
-
-Copyright © 2025 Muhammad Naufal Labib Ramadhan. All rights reserved.
-
----
-
-## 🙏 Acknowledgments
-
-* **EdTech Indonesia** - Untuk kesempatan technical test yang menantang
-* **Firebase** - Untuk backend infrastructure yang powerful
-* **Vercel** - Untuk Recharts library yang amazing
-* **Radix UI** - Untuk accessible component primitives
-* **TailwindCSS** - Untuk utility-first CSS framework
-* **Redux Team** - Untuk Redux Toolkit yang simplify state management
-
----
-
-## 📚 Additional Resources
-
-* [React Documentation](https://react.dev/)
-* [Firebase Documentation](https://firebase.google.com/docs)
-* [Redux Toolkit Documentation](https://redux-toolkit.js.org/)
-* [TailwindCSS Documentation](https://tailwindcss.com/docs)
-* [Vite Documentation](https://vitejs.dev/)
-* [Recharts Documentation](https://recharts.org/)
-* [Radix UI Documentation](https://www.radix-ui.com/)
-
----
+* **Padding** : 16px base, 24px untuk sections
+* **Border Radius** : 8-12px untuk cards, 0.625rem untuk buttons
+* **Shadows** : Soft shadows dengan blur 10-20px
+* **Breakpoints** :
+* Mobile: < 640px
+* Tablet: 640px - 1024px
+* Desktop: > 1024px
 
 ## 🚀 Deployment Guide
 
 ### Deploy to Vercel (Recommended)
 
-1. **Push ke GitHub**
-
-bash
+1. **Push ke GitHub** :
 
 ```bash
-gitadd.
+git add .
 git commit -m "Initial commit"
 git push origin main
 ```
 
-2. **Import Project ke Vercel**
+2. **Import Project ke Vercel** :
 
-- Kunjungi [vercel.com](https://vercel.com/)
-- Klik "New Project"
-- Import repository dari GitHub
-- Vercel akan auto-detect Vite configuration
+* Kunjungi [vercel.com](https://vercel.com/)
+* Klik "New Project"
+* Import repository dari GitHub
+* Vercel akan auto-detect Vite configuration
 
-3. **Setup Environment Variables**
+2. **Setup Environment Variables** :
 
-- Di Vercel dashboard, buka Settings > Environment Variables
-- Tambahkan semua variabel dari `.env`:
+* Di Vercel dashboard, buka Settings > Environment Variables
+* Tambahkan semua variabel dari `.env`:
+  * `VITE_FIREBASE_API_KEY`
+  * `VITE_FIREBASE_AUTH_DOMAIN`
+  * `VITE_FIREBASE_PROJECT_ID`
+  * `VITE_FIREBASE_STORAGE_BUCKET`
+  * `VITE_FIREBASE_MESSAGING_SENDER_ID`
+  * `VITE_FIREBASE_APP_ID`
 
-```
-  VITE_FIREBASE_API_KEY
-  VITE_FIREBASE_AUTH_DOMAIN
-  VITE_FIREBASE_PROJECT_ID
-  VITE_FIREBASE_STORAGE_BUCKET
-  VITE_FIREBASE_MESSAGING_SENDER_ID
-  VITE_FIREBASE_APP_ID
-```
-
-4. **Deploy**
+2. **Deploy** :
 
 * Klik "Deploy"
 * Tunggu hingga build selesai
@@ -951,25 +858,19 @@ git push origin main
 
 ### Deploy to Firebase Hosting
 
-1. **Install Firebase CLI**
-
-bash
+1. **Install Firebase CLI** :
 
 ```bash
-npminstall -g firebase-tools
+npm install -g firebase-tools
 ```
 
-2. **Login ke Firebase**
-
-bash
+2. **Login ke Firebase** :
 
 ```bash
 firebase login
 ```
 
-3. **Initialize Firebase Hosting**
-
-bash
+3. **Initialize Firebase Hosting** :
 
 ```bash
 firebase init hosting
@@ -980,534 +881,409 @@ firebase init hosting
 * Configure as SPA: Yes
 * Setup automatic builds: No
 
-4. **Build dan Deploy**
-
-bash
+4. **Build dan Deploy** :
 
 ```bash
 npm run build
 firebase deploy --only hosting
 ```
 
-### Deploy to Netlify
+## 📋 Best Practices Implemented
 
-1. **Install Netlify CLI**
+### ✅ Code Organization
 
-bash
+* Modular component structure
+* Separation of concerns (services, components, pages)
+* Reusable utility functions
+* Consistent naming conventions
 
-```bash
-npminstall -g netlify-cli
-```
+### ✅ Performance
 
-2. **Build Project**
+* Optimized re-renders dengan proper React patterns
+* Memoization untuk expensive computations
+* Lazy loading ready
+* Efficient state management dengan Redux Toolkit
 
-bash
+### ✅ Data Management
 
-```bash
-npm run build
-```
+* **Smart Sorting** : Automatic sorting di Redux level
+* **Real-time Sync** : Data langsung sync dengan Firestore
+* **Optimistic Updates** : UI update instant, rollback jika error
+* **Timestamp Management** : Auto-generated createdAt & updatedAt
+* **Data Serialization** : Convert Firebase Timestamp ke ISO string
 
-3. **Deploy**
+### ✅ User Experience
 
-bash
+* **Loading States** : Skeleton loaders, spinners, disabled buttons
+* **Error Handling** : Try-catch dengan user-friendly messages
+* **Toast Notifications** : Immediate feedback untuk setiap action
+* **Empty States** : Helpful illustrations dan CTAs
+* **Responsive Design** : Smooth experience di semua devices
 
-```bash
-netlify deploy --prod
-```
+### ✅ Accessibility
 
-4. **Setup Environment Variables**
+* Semantic HTML elements
+* ARIA labels untuk screen readers
+* Keyboard navigation support
+* Focus management di modals
+* Color contrast compliance
 
-* Di Netlify dashboard > Site settings > Environment variables
-* Tambahkan semua VITE_ variables
+### ✅ Security
 
----
+* Environment variables untuk sensitive data
+* Firebase Security Rules implementation
+* Protected routes dengan authentication check
+* Input sanitization dan validation
 
-## 🔐 Security Best Practices
+## 🔧 Advanced Features
 
-### Environment Variables
+### Bulk Operations
 
-bash
-
-```bash
-# ❌ JANGAN commit file .env
-# ✅ Gunakan .env.example untuk template
-# ✅ Tambahkan .env ke .gitignore
-```
-
-### Firebase Security Rules
-
-javascript
-
-```javascript
-// ✅ Production-ready rules
-rules_version ='2';
-service cloud.firestore{
-  match /databases/{database}/documents {
-// Only authenticated users can access
-    match /{document=**}{
-      allow read,write:if request.auth!=null;
-}
-  
-// Optional: More granular rules
-    match /tutors/{tutorId}{
-      allow read:if request.auth!=null;
-      allow create, update,delete:if request.auth!=null;
-}
-  
-    match /bookings/{bookingId}{
-      allow read:if request.auth!=null;
-      allow create, update,delete:if request.auth!=null;
-}
-}
-}
-```
-
-### Input Validation
-
-javascript
+**Tutors Bulk Delete:**
 
 ```javascript
-// ✅ Client-side validation
-// ✅ Server-side validation (Firebase Security Rules)
-// ✅ Sanitize user inputs
-// ✅ Use Zod for schema validation
+// Multi-select dengan checkbox
+// Validation: Check each tutor for active bookings
+// Partial success handling
+// Detailed feedback: "X tutor berhasil, Y tutor gagal (alasan)"
 ```
 
----
-
-## 📊 Performance Optimization
-
-### Code Splitting
-
-javascript
+**Bookings Bulk Delete:**
 
 ```javascript
-// Lazy load pages untuk faster initial load
-constDashboard=lazy(()=>import('./pages/Dashboard'));
-constTutors=lazy(()=>import('./pages/Tutors'));
-constBookings=lazy(()=>import('./pages/Bookings'));
+// Multi-select dengan checkbox
+// Confirmation dialog untuk safety
+// Batch delete dengan error handling
+// Success feedback dengan counter
 ```
 
-### Image Optimization
+### Dynamic Dashboard
 
-javascript
+**Growth Calculation:**
 
 ```javascript
-// ✅ Use WebP format
-// ✅ Lazy load images
-// ✅ Use srcset untuk responsive images
-// ✅ Optimize avatar service dengan query params
+// Real-time calculation dari Firebase data
+// Compare current week (7 hari terakhir) vs previous week (7 hari sebelumnya)
+// Dynamic percentage dengan color coding (green/red)
+// Trend indicator: "Trending up/down by X%"
 ```
 
-### Bundle Size Optimization
-
-bash
-
-```bash
-# Analyze bundle size
-npm run build
-npx vite-bundle-visualizer
-```
-
-### Caching Strategy
-
-javascript
+**Weekly Chart:**
 
 ```javascript
-// ✅ Service Worker untuk offline support
-// ✅ Cache Firebase queries dengan TTL
-// ✅ Memoize expensive computations
+// Data 7 hari terakhir dari Firebase
+// Interactive Recharts dengan gradient
+// Custom tooltip dengan detail info
+// Responsive sizing untuk mobile/tablet/desktop
 ```
 
----
+### Smart Data Sorting
 
-## 🧪 Testing Guide
-
-### Setup Jest & React Testing Library
-
-bash
-
-```bash
-npminstall --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event jest jest-environment-jsdom
-```
-
-### Example Unit Test
-
-javascript
+**Auto-Sort on Add/Edit:**
 
 ```javascript
-// TutorCard.test.jsx
-import{ render, screen }from'@testing-library/react';
-importTutorCardfrom'./TutorCard';
-
-describe('TutorCard',()=>{
-const mockTutor ={
-id:'1',
-name:'John Doe',
-email:'john@example.com',
-subject:'Matematika',
-hourlyRate:50000,
-status:'active'
-};
-
-it('renders tutor information correctly',()=>{
-render(<TutorCard tutor={mockTutor}/>);
-  
-expect(screen.getByText('John Doe')).toBeInTheDocument();
-expect(screen.getByText('john@example.com')).toBeInTheDocument();
-expect(screen.getByText('Matematika')).toBeInTheDocument();
-});
-});
+// Tutors: Newest always on top (sort by createdAt DESC)
+// Bookings: Nearest date always on top (sort by date ASC, startTime ASC)
+// Re-sort otomatis setelah CRUD operations
+// Konsisten across all views dan pagination
 ```
 
-### E2E Testing with Cypress
+## 📊 Project Statistics
 
-bash
-
-```bash
-npminstall --save-dev cypress
-npx cypress open
+```
+📦 Total Files: 45+
+📝 Lines of Code: 6,000+
+⚛️ React Components: 25+
+🔥 Firebase Collections: 2
+🎨 TailwindCSS Classes: 600+
+🚀 Redux Slices: 3
+📱 Responsive Breakpoints: 4
+🌙 Theme Support: Dark + Light
+☕ Coffee Consumed: Unlimited
 ```
 
-javascript
+## 🛠 Troubleshooting
+
+### Common Issues
+
+**1. Firebase Configuration Error**
+
+```
+Error: Firebase: Error (auth/invalid-api-key)
+```
+
+ **Solution** : Pastikan semua environment variables di `.env` sudah diisi dengan benar dan sesuai format.
+
+**2. Port Already in Use**
+
+```
+Error: Port 5173 is already in use
+```
+
+ **Solution** : Kill process yang menggunakan port atau ubah port di `vite.config.js`:
 
 ```javascript
-// cypress/e2e/login.cy.js
-describe('Login Flow',()=>{
-it('should login successfully with valid credentials',()=>{
-    cy.visit('/login');
-    cy.get('input[type="email"]').type('admin@edtech.com');
-    cy.get('input[type="password"]').type('admin123');
-    cy.get('button[type="submit"]').click();
-    cy.url().should('include','/dashboard');
-});
-});
-```
-
----
-
-## 🐛 Debugging Tips
-
-### Redux DevTools
-
-javascript
-
-```javascript
-// Sudah configured di store.js
-// Install Redux DevTools Extension di browser
-// Inspect state, actions, dan time-travel debugging
-```
-
-### React Developer Tools
-
-javascript
-
-```javascript
-// Install React DevTools Extension
-// Inspect component tree, props, state, hooks
-```
-
-### Firebase Emulator Suite
-
-bash
-
-```bash
-# Install Firebase tools
-npminstall -g firebase-tools
-
-# Initialize emulators
-firebase init emulators
-
-# Start emulators
-firebase emulators:start
-
-# Update firebase config untuk local development
-const useEmulator = import.meta.env.DEV;
-if(useEmulator){
-  connectFirestoreEmulator(db, 'localhost', 8080);
-  connectAuthEmulator(auth, 'http://localhost:9099');
+export default {
+  server: { port: 3000 }
 }
 ```
 
-### Console Logging Best Practices
+**3. Firestore Permission Denied**
 
-javascript
-
-```javascript
-// ✅ Use console groups
-console.group('Tutor CRUD');
-console.log('Creating tutor:', tutorData);
-console.groupEnd();
-
-// ✅ Use console.table untuk array objects
-console.table(tutors);
-
-// ✅ Remove console.logs di production
-// Add vite plugin: vite-plugin-remove-console
+```
+Error: Missing or insufficient permissions
 ```
 
----
+ **Solution** :
 
-## 📈 Analytics & Monitoring
+* Update Firestore Security Rules
+* Pastikan user sudah login
+* Check authentication token validity
 
-### Firebase Analytics (Optional)
+**4. Dark Mode Not Persisting**
 
-javascript
-
-```javascript
-import{ getAnalytics, logEvent }from'firebase/analytics';
-
-const analytics =getAnalytics(app);
-
-// Track events
-logEvent(analytics,'tutor_created',{
-subject: tutorData.subject
-});
-
-logEvent(analytics,'booking_completed',{
-tutor_id: booking.tutorId
-});
+```
+Theme resets on page reload
 ```
 
-### Error Tracking with Sentry (Optional)
+ **Solution** :
 
-bash
+* Check localStorage permissions
+* Pastikan ThemeProvider properly wrapped
+* Verify storageKey di ThemeProvider
 
-```bash
-npminstall @sentry/react
+**5. Data Not Sorting Correctly**
+
+```
+Newest data appears at bottom instead of top
 ```
 
-javascript
+ **Solution** :
 
-```javascript
-import*asSentryfrom"@sentry/react";
+* Check Redux slice sorting implementation
+* Verify createdAt/updatedAt timestamps
+* Clear browser cache dan reload
 
-Sentry.init({
-dsn:"YOUR_SENTRY_DSN",
-integrations:[
-newSentry.BrowserTracing(),
-newSentry.Replay(),
-],
-tracesSampleRate:1.0,
-});
-```
-
----
-
-## 🎓 Learning Resources
+## 📚 Learning Resources
 
 ### React & Modern JavaScript
 
-* [React Beta Docs](https://react.dev/) - Official React documentation
-* [JavaScript Info](https://javascript.info/) - Modern JavaScript tutorial
-* [You Don&#39;t Know JS](https://github.com/getify/You-Dont-Know-JS) - Deep dive into JS
+* [React Official Docs](https://react.dev/) - Complete React guide
+* [JavaScript Info](https://javascript.info/) - Modern JS tutorial
+* [MDN Web Docs](https://developer.mozilla.org/) - Web standards reference
 
 ### Firebase
 
-* [Firebase Crash Course](https://www.youtube.com/watch?v=q5J5ho7YUhA) - YouTube tutorial
+* [Firebase Documentation](https://firebase.google.com/docs) - Official docs
 * [Firestore Data Modeling](https://firebase.google.com/docs/firestore/data-model) - Best practices
 
 ### State Management
 
-* [Redux Toolkit Official Tutorial](https://redux-toolkit.js.org/tutorials/overview)
-* [Redux Essentials](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)
+* [Redux Toolkit Docs](https://redux-toolkit.js.org/) - Official tutorial
+* [Redux Essentials](https://redux.js.org/tutorials/essentials/part-1-overview-concepts) - Core concepts
 
-### TailwindCSS
+### UI/UX Design
 
-* [Tailwind Play](https://play.tailwindcss.com/) - Online playground
-* [Tailwind UI Components](https://tailwindui.com/components) - Component examples
+* [TailwindCSS Docs](https://tailwindcss.com/docs) - Utility classes reference
+* [Radix UI Docs](https://www.radix-ui.com/) - Accessible components
+* [Recharts Docs](https://recharts.org/) - Chart library guide
 
----
+## 💡 Future Improvements
 
-## 💡 Pro Tips
+Fitur yang bisa ditambahkan untuk development selanjutnya:
 
-### Development Workflow
+* [ ] **Advanced Filtering** : Date range filter untuk bookings
+* [ ] **Export Data** : Export tables ke CSV/PDF
+* [ ] **Real-time Notifications** : WebSocket untuk live updates
+* [ ] **User Roles** : Admin, Tutor, Student dengan permissions berbeda
+* [ ] **Payment Integration** : Stripe/Midtrans untuk payment processing
+* [ ] **Calendar View** : Alternative view untuk bookings dengan drag & drop
+* [ ] **Analytics Dashboard** : More detailed insights (revenue, popular subjects, etc.)
+* [ ] **Multi-language** : i18n support (Indonesia & English)
+* [ ] **File Upload** : Avatar/document upload untuk tutors & students
+* [ ] **Email Notifications** : Automated booking reminders
+* [ ] **Mobile App** : React Native version
+* [ ] **Unit Testing** : Jest + React Testing Library
+* [ ] **E2E Testing** : Cypress atau Playwright
+* [ ] **CI/CD Pipeline** : GitHub Actions untuk automated deployment
+* [ ] **Performance Monitoring** : Sentry atau LogRocket integration
 
-bash
+## 👨‍💻 Kontak
 
-```bash
-# Use npm scripts untuk common tasks
-npm run dev          # Start dev server
-npm run build        # Production build
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
+**Developer:** Muhammad Naufal Labib Ramadhan
 
-# Use git hooks untuk code quality
-npminstall --save-dev husky lint-staged
-npx husky init
-```
+📧 **Email:** [muhammadnaufallabibramadhan@gmail.com](mailto:muhammadnaufallabibramadhan@gmail.com)
 
-### VS Code Extensions (Recommended)
+🔗 **GitHub:** [https://github.com/Naufallabibb](https://github.com/Naufallabibb)
 
-- **ES7+ React/Redux/React-Native snippets** - Code snippets
-- **Tailwind CSS IntelliSense** - Autocomplete untuk Tailwind classes
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **Firebase Explorer** - Firebase integration
-- **GitLens** - Git supercharged
-- **Error Lens** - Inline error highlighting
-
-### Keyboard Shortcuts
-
-```
-Ctrl/Cmd + P       → Quick file search
-Ctrl/Cmd + Shift + P → Command palette
-Ctrl/Cmd + /       → Toggle comment
-Alt + Shift + F    → Format document
-F12                → Go to definition
-```
+📱 **LinkedIn:** [Muhammad Naufal Labib Ramadhan](https://www.linkedin.com/in/naufallabibb/)
 
 ---
 
-## 📞 Support & Contribution
+## 📄 License
 
-### Reporting Issues
+This project is created for  **EdTech Indonesia Web Developer Internship Technical Test** .
 
-Jika menemukan bug atau ada pertanyaan:
-
-1. Check existing issues di GitHub
-2. Buat issue baru dengan template:
-   - **Title**: Brief description
-   - **Description**: Detailed explanation
-   - **Steps to Reproduce**: How to trigger the bug
-   - **Expected vs Actual Behavior**
-   - **Screenshots**: If applicable
-   - **Environment**: Browser, OS, Node version
-
-### Contributing
-
-Contributions are welcome! Untuk contribute:
-
-1. Fork repository
-2. Create feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit changes: `git commit -m 'Add some AmazingFeature'`
-4. Push to branch: `git push origin feature/AmazingFeature`
-5. Open Pull Request
+Copyright © 2025 Muhammad Naufal Labib Ramadhan. All rights reserved.
 
 ---
 
-## 🏆 Credits & Attribution
+## 🙏 Acknowledgments
 
-### Open Source Libraries
-
-- **React Team** - Core framework
-- **Firebase Team** - Backend infrastructure
-- **Vercel** - Vite build tool
-- **TailwindLabs** - TailwindCSS framework
-- **Radix UI** - Accessible components
-- **Redux Team** - State management
-- **Emil Kowalski** - Sonner toast library
-
-### Design Inspiration
-
-- **shadcn/ui** - Component design patterns
-- **Vercel Dashboard** - Layout inspiration
-- **Linear App** - UI/UX excellence
-
-### Icons & Assets
-
-- **FontAwesome** - Icon library
-- **iran.liara.run** - Avatar placeholder service
-- **Google Fonts** - Poppins & Inter typography
+* **EdTech Indonesia** - Untuk kesempatan technical test yang menantang
+* **Firebase Team** - Untuk backend infrastructure yang powerful
+* **Vercel** - Untuk Vite & Recharts library yang amazing
+* **Radix UI Team** - Untuk accessible component primitives
+* **TailwindLabs** - Untuk utility-first CSS framework
+* **Redux Team** - Untuk Redux Toolkit yang simplify state management
+* **Open Source Community** - Untuk semua libraries yang digunakan
 
 ---
 
 ## 📝 Changelog
 
+### Version 1.1.0 (Latest - October 2025)
+
+**🎯 Major Features Added:**
+
+* ✅  **Smart Data Sorting** :
+  * Tutors automatically sorted newest first (by creation date)
+  * Bookings sorted by nearest date & time (date ASC, startTime ASC)
+  * Auto re-sort after add/edit operations
+  * Consistent sorting across all views
+* ✅  **Bulk Operations** :
+  * Multi-select tutors dengan checkbox (select all support)
+  * Multi-select bookings dengan checkbox
+  * Bulk delete untuk tutors dengan validation (check active bookings)
+  * Bulk delete untuk bookings dengan confirmation
+  * Partial success handling dengan detailed feedback
+* ✅  **Dynamic Dashboard Analytics** :
+  * Real-time growth percentage calculation
+  * Compare current week vs previous week from actual Firebase data
+  * Dynamic color coding (green for positive, red for negative)
+  * Trend indicator text: "Trending up/down by X%"
+  * Weekly chart dengan data 7 hari terakhir
+  * Interactive tooltip pada chart
+
+**🎨 UI/UX Improvements:**
+
+* ✅ Bulk actions bar dengan selection counter
+* ✅ Checkbox di table header untuk select all
+* ✅ Improved loading states dengan skeleton
+* ✅ Better empty states dengan kondisional messages
+* ✅ Enhanced toast notifications dengan descriptive messages
+* ✅ Improved responsive design untuk bulk actions
+
+**🔧 Technical Improvements:**
+
+* ✅ Redux slice optimization untuk sorting
+* ✅ Helper function untuk sort by date & time
+* ✅ Growth calculation logic dari Firebase data
+* ✅ Improved error handling untuk bulk operations
+* ✅ Better state management untuk selections
+
+---
+
 ### Version 1.0.0 (October 2025)
 
 **Initial Release**
 
-#### ✨ Features
-
-- ✅ Firebase Authentication (Email/Password)
-- ✅ Tutors Management (CRUD)
-- ✅ Bookings Management (CRUD)
-- ✅ Dashboard with Analytics
-- ✅ Weekly Bookings Chart
-- ✅ Dark Mode Support
-- ✅ Responsive Design (Mobile/Tablet/Desktop)
-- ✅ Toast Notifications
-- ✅ Skeleton Loading States
-- ✅ Form Validation
-- ✅ Search & Filter Functionality
-- ✅ Pagination
-- ✅ Empty States
-- ✅ Protected Routes
-
-#### 🎨 UI/UX
-
-- ✅ Custom StudyIO Gradient Branding
-- ✅ Smooth Animations & Transitions
-- ✅ Custom Scrollbar
-- ✅ Avatar Integration
-- ✅ Status Badges
-- ✅ Confirmation Dialogs
-
-#### 🛠 Technical
-
-- ✅ Redux Toolkit State Management
-- ✅ Firestore Real-time Database
-- ✅ Vite Build Tool
-- ✅ TailwindCSS 4.1.16
-- ✅ ESLint Configuration
-- ✅ Environment Variables Setup
+* ✅ Firebase Authentication (Email/Password)
+* ✅ Tutors Management (CRUD)
+* ✅ Bookings Management (CRUD)
+* ✅ Dashboard with Analytics
+* ✅ Weekly Bookings Chart
+* ✅ Dark Mode Support
+* ✅ Responsive Design
+* ✅ Toast Notifications
+* ✅ Form Validation
+* ✅ Search & Filter
+* ✅ Pagination
+* ✅ Protected Routes
 
 ---
 
-## 🎖 Project Stats
-
-```
-📦 Total Files: 45+
-📝 Lines of Code: 5,000+
-⚛️ React Components: 20+
-🔥 Firebase Collections: 2
-🎨 TailwindCSS Classes: 500+
-☕ Coffee Consumed: Unlimited
-```
-
----
-
-## 🌟 Final Notes
+## 🌟 Key Highlights
 
 Project ini dibuat dengan ❤️ untuk  **EdTech Indonesia Technical Test** .
 
-Terima kasih telah mereview project ini. Saya sangat antusias untuk berkontribusi pada platform pembelajaran yang innovative dan membuat dampak positif untuk pendidikan di Indonesia.
+**What Makes This Project Stand Out:**
 
-**Key Highlights:**
+* ✨  **Smart Data Management** : Auto-sorting untuk UX yang lebih baik (newest tutors first, nearest bookings first)
+* 🚀  **Advanced Bulk Operations** : Multi-select & bulk delete dengan proper validation
+* 📊  **Dynamic Analytics** : Real-time growth tracking dari actual Firebase data
+* 🎨  **Modern UI/UX** : Clean design dengan attention to detail
+* 🌙  **Full Dark Mode** : Seamless theme switching
+* 📱  **Fully Responsive** : Optimized untuk semua devices
+* 🔥  **Real-time Sync** : Instant updates dengan Firebase
+* 💪  **Production-Ready** : Best practices & error handling
+* ♿  **Accessible** : WCAG compliant
+* 🧪  **Scalable** : Clean architecture untuk future growth
 
-* ✨ Clean, maintainable, dan scalable code architecture
-* 🎨 Modern UI/UX dengan attention to detail
-* 🚀 Production-ready dengan best practices
-* 📱 Full responsive design
-* 🌙 Dark mode support
-* 🔥 Real-time Firebase integration
-* 💪 Comprehensive CRUD operations
-* 📊 Data visualization dengan Recharts
-* 🎯 Type-safe dengan proper validation
-* 🧪 Ready for testing implementation
+---
 
-Saya terbuka untuk feedback dan siap untuk discuss lebih lanjut tentang technical decisions dan potential improvements.
+## 🎓 Development Philosophy
 
-**Let's build the future of EdTech together! 🚀**
+Dalam mengembangkan project ini, saya fokus pada:
+
+1. **User Experience First** : Setiap fitur dirancang dengan mempertimbangkan kemudahan pengguna
+2. **Clean Code** : Kode yang mudah dibaca, maintain, dan scale
+3. **Best Practices** : Mengikuti industry standards & React best practices
+4. **Accessibility** : Memastikan aplikasi bisa digunakan semua orang
+5. **Performance** : Optimasi untuk pengalaman yang smooth
+6. **Scalability** : Struktur yang siap untuk growth & new features
+
+---
+
+## 🚀 Ready for Production
+
+Project ini sudah **production-ready** dengan:
+
+* ✅ Environment variables management
+* ✅ Firebase security rules
+* ✅ Error boundaries & error handling
+* ✅ Loading states & feedback mechanisms
+* ✅ Responsive design untuk semua devices
+* ✅ Dark mode support
+* ✅ SEO-friendly routing
+* ✅ Performance optimization
+* ✅ Accessible components
+* ✅ Clean & documented code
+
+---
+
+## 📞 Let's Connect!
+
+Saya sangat antusias untuk berkontribusi pada **EdTech Indonesia** dan membantu membangun platform pembelajaran yang innovative.
+
+**Available for:**
+
+* 💼 Full-time/Internship opportunities
+* 🤝 Collaboration on EdTech projects
+* 💬 Technical discussions
+* 📧 Code reviews & feedback
+
+**Response Time:** < 24 hours
+
+---
+
+<div align="center">
+### ⭐ If you like this project, please give it a star on GitHub! ⭐
+
+**Made with ❤️ and ☕ in Indonesia**
 
 ---
 
 **Muhammad Naufal Labib Ramadhan**
 
-Frontend Web Developer Candidate
+Frontend Web Developer Candidate | EdTech Indonesia
 
-EdTech Indonesia - Web Developer Internship
-
-📧 [muhammadnaufallabibramadhan@gmail.com](mailto:muhammadnaufallabibramadhan@gmail.com)
-
-🔗 [GitHub](https://github.com/Naufallabibb)
-
-*"Code is like humor. When you have to explain it, it's bad." - Cory House*
+[📧 Email](mailto:muhammadnaufallabibramadhan@gmail.com) • [🔗 GitHub](https://github.com/Naufallabibb) • [💼 LinkedIn](https://www.linkedin.com/in/naufallabibb/)
 
 ---
 
-<div align="center">
-**⭐ If you like this project, please give it a star on GitHub! ⭐**
+*"The best error message is the one that never shows up."* - Thomas Fuchs
 
-Made with ❤️ and ☕ in Indonesia
+*"Code is like humor. When you have to explain it, it's bad."* - Cory House
+
+</div>
